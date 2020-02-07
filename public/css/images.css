@@ -1,0 +1,13 @@
+
+/* HOME ------- */
+
+section.img.desk {
+  /*background-image: url()*/
+  background-image:
+    url(
+      '../images/photos/desk.jpg'
+    );
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

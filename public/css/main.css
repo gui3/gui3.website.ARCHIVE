@@ -15,6 +15,8 @@ h1 {
   font-size: 2.3em;
   font-weight: bolder;
   /*font-style: italic;*/
+  padding: 0 1em;
+  width: auto;
 }
 h2 {
   font-size: 2em;
@@ -33,10 +35,10 @@ a {
   text-decoration: inherit;
   font-family: inherit;
   /*font-weight: bold;*/
-  border-bottom: 2px dotted #d22;
+  border-bottom: 0.15em dotted #d22;
 }
 a:hover {
-  outline: 3px solid #d22;
+  outline: 0.15em solid #d22;
   outline-offset: 0.2em;
   border-bottom: none;
   /*color: #d22;*/
@@ -68,6 +70,12 @@ button:focus {
 ul {
   list-style-type: none;
   font-size: 1.3em;
+  padding: 0.5em;
+  font: inherit;
+}
+ul.dotted {
+  list-style-type: square;
+  margin: 0 0.5em;
 }
 
 button.logo, a.logo {
@@ -123,9 +131,7 @@ nav.navbar {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 5em;
-  padding-left: 1em;
-  padding-right: 2em;
+  padding: 1em;
 }
 
 footer {
@@ -155,6 +161,7 @@ section {
 }
 
 article {
+  height: auto;
   padding: 1em 3em;
   display: flex;
   flex-direction: column;
@@ -168,11 +175,58 @@ article {
   text-align: center;
 }
 
+img.left, img.right {
+  height: 100%;
+  max-height: 100vh;
+  max-width: 40%;
+  object-fit: cover;
+}
+img.right {
+  float: right;
+}
+img.left {
+  float: left;
+}
+
+p.description {
+  font-size: 0.8em;
+}
+p.description span.title {
+  font-size: 1.4em;
+  font-weight: bold;
+  display: block;
+  border-bottom: 0.05em dotted #555;
+}
+
+/* COLOURS -------*/
+
+.white {
+  background: #fff;
+}
+.white h1 {
+  background: #222;
+  color: #fff;
+}
 .coloured.green {
   background: #5e5;
   color: #22b;
 }
+.green h1 {
+  background: #22b;
+  color: #5e5;
+}
 .coloured.yellow {
-  background: #ca3;
-  color: #252;
+  background: #fb4;
+  color: #22b;
+}
+.yellow h1 {
+  background: #22b;
+  color: #fb4;
+}
+
+.margin.left {
+  margin-left: 40%;
+}
+.margin.right {
+  margin-right: 40%;
 }
