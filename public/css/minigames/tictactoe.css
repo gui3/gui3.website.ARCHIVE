@@ -2,6 +2,7 @@
   display: grid;
   grid-template: 1fr 1fr 1fr auto / 1fr 1fr 1fr;
   width: auto;
+  max-width: 6em;
 }
 
 #tictactoe button {
@@ -22,16 +23,8 @@
   z-index: 2;
 }
 
-#tictactoe #tttMessages {
-  grid-column: 1/ span 3;
-  grid-row: 4/4;
-  background: #ddd;
-  border-radius: 0.5em;
-  color: #2a5;
-  height: 3em;
-  overflow-y: auto;
-  margin: 0.4em;
-  padding: 0.3em;
-  box-shadow: 0 0 0.5em #555 inset;
+ff {
   white-space: pre-wrap;
+  font-weight: bold;
+  font-size: 1.2em;
 }
