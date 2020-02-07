@@ -2,12 +2,17 @@
 <html lang="en">
   <% include ./_head %>
 
-  <body class="container">
+  <body>
     <% include ./_header %>
+    <% include ./_navbar %>
 
-    <%- body %>
+    <div class="main container">
+      <%- body %>
 
-    <% include ./_footer %>
+      <% include ./_footer %>
+    </div>
   </body>
+
+  <% include ./_scripts %>
 
 </html>
