@@ -1,0 +1,37 @@
+<nav id="sidebar" class="navbar navbar-default" role="navigation">
+
+  <div class="navbar-header">
+    <h3>
+      🗺️ MENU
+    </h3>
+
+    <ul class="nav dotted">
+      <% if (locals.shared && locals.shared.pages) { %>
+        <% const pages = locals.shared.pages.sort(
+          (a, b) => -a.options.priority + b.options.priority
+        )
+        console.log(pages)
+        for (
+          let i = 0; i < pages.length; i++
+        ) { // add every page to the menu
+        %>
+          <li>
+            <a href="/<%= pages[i].name %>">
+              <% if (pages[i].options) { %>
+                <%= pages[i].options.alias
+                  ? pages[i].options.alias
+                  : pages[i].name
+                 %>
+               <% } else { %>
+                 <%= pages[i].name
+                   ? pages[i].name
+                   : pages[i] %>
+               <% } // end of if %>
+            </a>
+          </li>
+        <% } // end of for %>
+      <% } // end of if %>
+    </ul>
+  </div>
+
+</nav>

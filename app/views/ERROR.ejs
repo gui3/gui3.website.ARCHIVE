@@ -1,0 +1,36 @@
+<section class="white">
+  <article class="textCenter">
+
+    <h2>⚡⚡ OOOPS ...</h2>
+    <p>
+      On dirais que le serveur a connu une grosse erreur ...
+    </p>
+    <p>
+      <a href="/reboot">
+        💽 esssayer de rebooter le serveur
+      </a>
+    </p>
+    <p>
+      <a href="mailto:guillaume.silvent@hotmail.fr">
+        📧 j'ai déjà essayé, j'envoie un EMAIL au webmaster
+      </a>
+    </p>
+
+  </article>
+  <article class="">
+    <hr>
+    <h4>Stack de l'erreur :</h4>
+    <pre>
+      <code>
+        <%= locals.err
+          ? locals.err.stack
+            ? locals.err.stack
+            : locals.err.message
+              ? locals.err.message
+              : locals.err
+          : 'erreur non tracee'
+           %>
+      </code>
+    </pre>
+  </article>
+</section>

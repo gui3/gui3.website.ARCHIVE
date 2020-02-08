@@ -1,45 +1,33 @@
 
 listen(window, 'load', () => {
-  const tttCells = [[], [], []]
-  let over = false;
+  const tttCells = [[], [], []] // a grid with all cells
+  let over = false // true if game is full or winned
 
-  // generic functions ------------------
+  // GENERIC functions =========================================================
   function message (text) {
+    // displays a message in the bottom div of the game
     const messageBox = document.getElementById('tttMessages')
     clearElement(messageBox)
     messageBox.appendChild(
       document.createTextNode(text)
     )
-    //messageBox.scrollTop = messageBox.scrollHeight
+    // messageBox.scrollTop = messageBox.scrollHeight
   }
 
   function getPlayerSymbol (player) {
+    // returns the player's symbol
     const symbol = player === 1 ? 'O' : 'X'
     return symbol
   }
 
-  // function play ----------------------
-  function play (evnt) {
-    message('partie en cours...')
-    const btn = evnt.target
-    const cell = tttCells[btn.x][btn.y]
-    if (over) {
-      resetGame()
-    } else if (cell.state !== '') {
-      message('Cette cellule est déjà prise !')
-    } else {
-      setCell(cell, getPlayerSymbol(1))
-      over = checkGameOver()
-      if (!over) {
-        botTurn()
-        over = checkGameOver()
-      } else {
-        over = true
-      }
-    }
+  function setCell (cell, symbol) {
+    // sets the state of a cell and its symbol
+    cell.state = symbol
+    cell.button.innerHTML = symbol
   }
 
   function resetGame () {
+    // resets the grid to empty cells
     over = false
     tttCells.forEach(col => {
       col.forEach(cell => {
@@ -49,12 +37,10 @@ listen(window, 'load', () => {
     })
   }
 
-  function setCell (cell, symbol) {
-    cell.state = symbol
-    cell.button.innerHTML = symbol
-  }
-
   function getAllLines () {
+    // scans the grid and returns an array
+    // with all the possible lines
+    // (rows, columns and diagonals)
     const results = []
     const diagUp = []
     const diagDown = [];
@@ -80,6 +66,8 @@ listen(window, 'load', () => {
   }
 
   function checkGameOver () {
+    // checks if game is won
+    // OR if all cells are full
     const lines = getAllLines()
     let over = true
     for (let i = 0; i < lines.length; i++) {
@@ -97,69 +85,13 @@ listen(window, 'load', () => {
       }
     }
     if (over) {
-      message('Partie terminée, cliquez une case pour recommencer')
+      message('Partie terminée, \ncliquez une case pour recommencer')
       return true
     } else return false
   }
 
-  function botTurn () { // AI playing --------------
-    const cells = []
-    const lines = getAllLines()
-    lines.forEach(line => {
-      line.forEach(cell => {
-        cell.score = [0, 2].includes(cell.x) && [0, 2].includes(cell.y)
-          ? 5
-          : cell.x === 1 && cell.y === 1
-            ? 2
-            : 0
-        cells.push(cell)
-      })
-    })
-
-    function getLineScore (line) {
-      let botCount = 0
-      let playerCount = 0
-      line.forEach(cell => {
-        switch (cell.state) {
-          case getPlayerSymbol(2):
-            botCount++
-            break
-          case getPlayerSymbol(1):
-            playerCount++
-            break
-        }
-      })
-      const scoreGrid = [
-        [2, -2, 20, 0], // ..., X.., XX., XXX
-        [5, 0, 0],      // ..O, OX., OXX
-        [30, 0],        // .OO, XOO
-        [0]             // OOO
-      ]
-      line.score = scoreGrid[botCount][playerCount]
-
-      line.forEach(cell => {
-        if (cell.state === '') cell.score += line.score
-        // console.log(cell)
-      })
-    }
-
-    lines.forEach(getLineScore)
-    let bestScore
-    cells.forEach(cell => {
-      if (cell.state === '' && (bestScore === undefined || cell.score > bestScore)) {
-        bestScore = cell.score
-      }
-    })
-
-    console.log(cells)
-    console.log(bestScore)
-    const bestCells = cells.filter(c => c.score === bestScore && c.state === '')
-    console.log(bestCells)
-    const bestCell = bestCells[Math.floor(Math.random() * bestCells.length)]
-    setCell(bestCell, getPlayerSymbol(2))
-  }
-
   function winGame (line) {
+    // when game is won by any player
     const text = 'les ' + line[0].state +
       ' ont gagné ! \ncliquez une case pour rejouer'
     message(text)
@@ -173,7 +105,96 @@ listen(window, 'load', () => {
     */
   };
 
-  // getting the cells ------------------
+  // AI function for bot playing ===============================================
+  function botTurn () {
+    // gives a score of interest to each cell
+    // according to the state of the line it is in
+    // then select a random cell between those
+    // who have the highest score
+    const cells = []
+    const lines = getAllLines()
+
+    lines.forEach(line => {
+      line.forEach(cell => {
+        cell.score = [0, 2].includes(cell.x) && [0, 2].includes(cell.y)
+          ? 5 // a bonus to cells in the corners
+          : cell.x === 1 && cell.y === 1
+            ? 2 // a little bonus to the cell in the middle
+            : 0 // no bonus to other cells
+        cells.push(cell)
+      })
+    })
+
+    function getLineScore (line) {
+      // calculate the interest of playing inside a line
+      let botCount = 0 // counts the
+      let playerCount = 0
+      line.forEach(cell => {
+        switch (cell.state) {
+          case getPlayerSymbol(2):
+            botCount++
+            break
+          case getPlayerSymbol(1):
+            playerCount++
+            break
+        }
+      })
+      const scoreGrid = [ // interrest according to the lines schema :
+        [2, -2, 20, 0], // ..., O.., OO., OOO
+        [5, 0, 0],      // ..X, .OX, OOX
+        [30, 0],        // .XX, OXX
+        [0]             // XXX
+      ]
+      line.score = scoreGrid[botCount][playerCount]
+      // the interrest of the line
+
+      line.forEach(cell => {
+        if (cell.state === '') cell.score += line.score
+        // each cell of the line get the line score as a bonus/malus
+      })
+    }
+
+    lines.forEach(getLineScore)
+    let bestScore
+    cells.forEach(cell => {
+      if (cell.state === '' && (bestScore === undefined || cell.score > bestScore)) {
+        bestScore = cell.score
+        // finding the best score
+        // there must be a more efficient way of doing that
+      }
+    })
+
+    const bestCells = cells.filter(c => c.score === bestScore && c.state === '')
+    const bestCell = bestCells[Math.floor(Math.random() * bestCells.length)]
+    // if multiple cells have the best score,
+    // pick one randomly
+    setCell(bestCell, getPlayerSymbol(2)) // the bot plays
+  }
+
+  // function PLAY =============================================================
+  function play (evnt) {
+    // the main function
+    // called on button click
+    message('partie en cours...')
+    const btn = evnt.target
+    const cell = tttCells[btn.x][btn.y]
+    if (over) {
+      resetGame()
+    } else if (cell.state !== '') {
+      message('Cette cellule est déjà prise !')
+    } else {
+      setCell(cell, getPlayerSymbol(1))
+      over = checkGameOver()
+      if (!over) {
+        botTurn()
+        over = checkGameOver()
+      } else {
+        over = true
+      }
+    }
+  }
+
+  // Setting up the Game =======================================================
   [0, 1, 2].forEach(x => {
     [0, 1, 2].forEach(y => {
       const btn = document.getElementById('ttt' + x + '.' + y)
@@ -194,5 +215,5 @@ listen(window, 'load', () => {
       tttCells[x][y] = cell
     })
   })
-  console.log(tttCells)
+  // game ready
 })

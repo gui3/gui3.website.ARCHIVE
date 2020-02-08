@@ -1,35 +1,79 @@
 // Setup
-var express = require('express');
-var app = express();
+var express = require('express')
+var app = express()
 
-require('dotenv').config();
+require('dotenv').config()
 
-const models = require("./app/db/models")
+// const models = require('./app/db/models') // models =========================
 
 // models.Post.create(
-//   {title:"test", content:"blablabla"},
+//   {title:'test', content:'blablabla'},
 //   (err, post) => {
 //     if (err) {console.log(err)}
-//     else {console.log("post test créé !")}
+//     else {console.log('post test créé !')}
 // });
 
+const path = require('path')
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'app/views'))
+app.use(require('express-partials')())
 
-const path = require("path");
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "app/views"));
-app.use(require("express-partials")());
+app.use(express.static('public'))
 
-app.use(express.static('public'));
+// ROUTES ======================================================================
+app.get('/error', function (req, res) {
+  res.render('test')
+})
 
-// Routes
-// app.get("/", (req, res) => {
-//    res.render('index');
-// });
-const routes = require("./app/routes/index");
-app.use('/', routes);
+const routes = require('./app/routes/index')
+app.use('/', routes)
 
-// Listen
-const port = process.env.PORT || 3000;
+// ERROR HANDLER ===============================================================
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+
+  function textErrorPage (handlerError, originalError) {
+    // in case there is NO RENDERER
+    // this is my last resooort ...
+    res.status(500)
+      .type('text')
+      .send(
+        '\n\n' +
+        '**************************************\n' +
+        'OUPS ???? j ai cru voir une grosse erreur ...\n' +
+        'Si vous voyez ce message, merci de me prevenir a cette addresse :\n' +
+        'guillaume.silvent@hotmail.fr\n' +
+          '**************************************\n\n' +
+        'ERROR HANDLING AN ERROR --------------------\n\n' +
+        handlerError.stack +
+        '\n\nORIGINAL ERROR -----------------------------\n\n' +
+        originalError.stack
+      )
+  }
+
+  try { // rendered error page -------------------------------------------------
+    res.status(500)
+    res.render(
+      'ERROR',
+      {
+        err: err,
+        layout: 'layoutBare'
+      },
+      function (e, html) {
+        if (e) { // renderer not working 1 -------------------------------------
+          textErrorPage(e, err)
+        } else { // renderer working -------------------------------------------
+          res.send(html)
+        }
+      }
+    )
+  } catch (e) { // renderer not working 2 --------------------------------------
+    textErrorPage(e, err)
+  }
+})
+
+// Listen ======================================================================
+const port = process.env.PORT || 3000
 app.listen(port, () => {
-    console.log('Server listening on port :' + port);
-});
+  console.log('Server listening on port :' + port)
+})

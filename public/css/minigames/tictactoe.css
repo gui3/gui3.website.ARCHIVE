@@ -1,8 +1,7 @@
-#tictactoe {
+#tictactoeGrid {
   display: grid;
   grid-template: 1fr 1fr 1fr auto / 1fr 1fr 1fr;
   width: auto;
-  max-width: 6em;
 }
 
 #tictactoe button {
@@ -23,8 +22,8 @@
   z-index: 2;
 }
 
-ff {
+#tttMessages {
   white-space: pre-wrap;
-  font-weight: bold;
-  font-size: 1.2em;
+  max-width: 12em;
+  min-height: 4em;
 }

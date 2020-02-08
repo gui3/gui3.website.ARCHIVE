@@ -24,17 +24,33 @@ h2 {
 }
 h3 {
   font-size: 1.5em;
+  margin-bottom: 0.5em;
 }
 p {
-  font-size: 1.3em;
+  font-size: 1.2em;
+  margin: 0.5em 0;
   /*font-style: italic;*/
+}
+blockquote {
+  margin: 0.7em 0;
+  padding: 0.7em 1.3em;
+  font-family:  cursive, Calibri, sans-serif;
+  font-style: italic;
+  color: #555;
+  border-radius: 1em 0;
+}
+.white blockquote {
+  background: #ffeed8;
+}
+.coloured blockquote {
+  background: #fff;
 }
 
 a {
   color: inherit;
   text-decoration: inherit;
   font-family: inherit;
-  /*font-weight: bold;*/
+  font-weight: bold;
   border-bottom: 0.15em dotted #d22;
 }
 a:hover {
@@ -42,6 +58,11 @@ a:hover {
   outline-offset: 0.2em;
   border-bottom: none;
   /*color: #d22;*/
+}
+a.external {
+  text-decoration: underline;
+  color: #d22;
+  border-bottom: none;
 }
 
 button {
@@ -156,6 +177,12 @@ footer p {
   flex-direction: row;
   align-items: center;
 }
+.flexCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 /* PAGES ----------- */
 
@@ -193,11 +220,10 @@ img.left {
 p.description {
   font-size: 0.8em;
 }
-p.description span.title {
+p.description .title {
   font-size: 1.4em;
   font-weight: bold;
   display: block;
-  border-bottom: 0.05em dotted #555;
 }
 
 /* COLOURS -------*/

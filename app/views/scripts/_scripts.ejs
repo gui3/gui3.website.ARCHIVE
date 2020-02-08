@@ -1,0 +1,18 @@
+<!-- SHARED SCRIPTS ----------------------------------------------------------->
+<script type="text/javascript" src="./js/main.js"></script>
+
+<!-- UNNEEDED SCRIPTS to save for further use ? --------------------------------
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+-->
+
+<!-- PAGE-SPECIFIC SCRIPTS ---------------------------------------------------->
+<% if (locals.page && locals.page.scripts) { // if options.scripts %>
+  <% for (
+    let i = 0; i < locals.page.scripts.length; i++
+  ) { // add every script tags
+  %>
+    <script
+    type="text/javascript"
+    src="<%= locals.page.scripts[i] %>"></script>
+  <% } // end of for %>
+<% } // end of if %>
