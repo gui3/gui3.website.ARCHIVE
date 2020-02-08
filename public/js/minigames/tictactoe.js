@@ -20,6 +20,7 @@ listen(window, 'load', () => {
 
   // function play ----------------------
   function play (evnt) {
+    message('partie en cours...')
     const btn = evnt.target
     const cell = tttCells[btn.x][btn.y]
     if (over) {
@@ -28,9 +29,10 @@ listen(window, 'load', () => {
       message('Cette cellule est déjà prise !')
     } else {
       setCell(cell, getPlayerSymbol(1))
-      if (!checkGameOver()) {
+      over = checkGameOver()
+      if (!over) {
         botTurn()
-        checkGameOver()
+        over = checkGameOver()
       } else {
         over = true
       }
@@ -42,6 +44,7 @@ listen(window, 'load', () => {
     tttCells.forEach(col => {
       col.forEach(cell => {
         setCell(cell, '')
+        cell.button.style.color = ''
       })
     })
   }
@@ -93,8 +96,10 @@ listen(window, 'load', () => {
         }
       }
     }
-    if (over) return true
-    else return false
+    if (over) {
+      message('Partie terminée')
+      return true
+    } else return false
   }
 
   function botTurn () { // AI playing --------------
@@ -102,22 +107,36 @@ listen(window, 'load', () => {
     const lines = getAllLines()
     lines.forEach(line => {
       line.forEach(cell => {
-        cell.score = 0
+        cell.score = [0, 2].includes(cell.x) && [0, 2].includes(cell.y)
+          ? 5
+          : cell.x === 1 && cell.y === 1
+            ? 2
+            : 0
         cells.push(cell)
       })
     })
 
     function getLineScore (line) {
-      line.score = 0
+      let botCount = 0
+      let playerCount = 0
       line.forEach(cell => {
-        if (cell.state === 0) {
-          line.score + 2
-        } else if (cell.state === getPlayerSymbol(2)) {
-          line.score += 5
-        } else {
-          line.score -= 2
+        switch (cell.state) {
+          case getPlayerSymbol(2):
+            botCount++
+            break
+          case getPlayerSymbol(1):
+            playerCount++
+            break
         }
       })
+      const scoreGrid = [
+        [2, -2, 20, 0], // ..., X.., XX., XXX
+        [5, 0, 0],      // ..O, OX., OXX
+        [30, 0],        // .OO, XOO
+        [0]             // OOO
+      ]
+      line.score = scoreGrid[botCount][playerCount]
+
       line.forEach(cell => {
         if (cell.state === '') cell.score += line.score
         // console.log(cell)
@@ -125,10 +144,18 @@ listen(window, 'load', () => {
     }
 
     lines.forEach(getLineScore)
-    const bestLine = lines.reduce((a, b) => a.score > b.score ? a : b)
-    const bestCell = bestLine.reduce((a, b) => a.score > b.score ? a : b)
+    let bestScore
+    cells.forEach(cell => {
+      if (cell.state === '' && (bestScore === undefined || cell.score > bestScore)) {
+        bestScore = cell.score
+      }
+    })
 
-    console.log(bestCell)
+    console.log(cells)
+    console.log(bestScore)
+    const bestCells = cells.filter(c => c.score === bestScore && c.state === '')
+    console.log(bestCells)
+    const bestCell = bestCells[Math.floor(Math.random() * bestCells.length)]
     setCell(bestCell, getPlayerSymbol(2))
   }
 
@@ -136,6 +163,9 @@ listen(window, 'load', () => {
     const text = 'les ' + line[0].state +
       ' ont gagné ! \ncliquez pour rejouer'
     message(text)
+    line.forEach(cell => {
+      cell.button.style.color = '#d22'
+    })
     /*
     setTimeout(_ => {
       alert(text)
