@@ -97,7 +97,7 @@ listen(window, 'load', () => {
       }
     }
     if (over) {
-      message('Partie terminée')
+      message('Partie terminée, cliquez une case pour recommencer')
       return true
     } else return false
   }
@@ -161,7 +161,7 @@ listen(window, 'load', () => {
 
   function winGame (line) {
     const text = 'les ' + line[0].state +
-      ' ont gagné ! \ncliquez pour rejouer'
+      ' ont gagné ! \ncliquez une case pour rejouer'
     message(text)
     line.forEach(cell => {
       cell.button.style.color = '#d22'
