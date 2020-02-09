@@ -1,11 +1,18 @@
+
 #tictactoeGrid {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr auto;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   width: auto;
+}
+#tictactoeGrid .tttRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 #tictactoe button {
+  display: inline-block;
+  vertical-align: bottom;
+
   border: 0.01em solid #555;
   background: none;
 

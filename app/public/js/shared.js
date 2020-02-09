@@ -3,7 +3,7 @@ function toggleSidebar () {
   const sidebar = document.getElementById('sidebar')
   switch (sidebar.style.display) {
     case 'none':
-      sidebar.style.display = 'flex'
+      sidebar.style.display = ''
       break
     default:
       sidebar.style.display = 'none'
@@ -34,3 +34,24 @@ function removeElement (arg) {
   }
   elemt.parentNode.removeChild(elemt)
 }
+
+const flashMessage = (function () {
+  let flashCount = 0
+
+  return function (type, text) {
+    const flash = document.createElement('p')
+    flash.classList.add('flash', type)
+    flashCount++
+    const flashId = 'flashClient' + flashCount
+    flash.id = flashId
+    flash.appendChild(document.createTextNode(text))
+    const button = document.createElement('button')
+    listen(button, 'click', function () {
+      removeElement('#' + flashId)
+    })
+    button.appendChild(document.createTextNode('X'))
+    flash.appendChild(button)
+
+    document.getElementById('flashes').appendChild(flash)
+  }
+})()

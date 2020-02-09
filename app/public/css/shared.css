@@ -115,12 +115,13 @@ img.logo {
 }
 
 /* LAYOUT ----------- */
-
-body {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto 1fr;
-  height: 100vh;
+@supports (display:grid) {
+  .main.container {
+    -display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+  }
 }
 
 header {
@@ -135,7 +136,7 @@ header {
   z-index: 2;
 }
 
-.main.container {
+.content.container {
   grid-column: 2/2;
   grid-row: 2/2;
   overflow: auto;
@@ -150,9 +151,6 @@ nav.navbar {
   color: #f5f5f5;
   box-shadow: 0.3em 0 0.2em rgba(0, 0, 0, 0.25);
   right: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   padding: 1em;
   z-index: 2;
 }

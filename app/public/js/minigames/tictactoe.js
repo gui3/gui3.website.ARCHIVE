@@ -23,7 +23,10 @@ listen(window, 'load', () => {
   function setCell (cell, symbol) {
     // sets the state of a cell and its symbol
     cell.state = symbol
-    cell.button.innerHTML = symbol
+    clearElement(cell.button)
+    cell.button.appendChild(
+      document.createTextNode(symbol)
+    )
   }
 
   function resetGame () {

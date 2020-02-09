@@ -3,5 +3,5 @@
     "./js/minigames/tictactoe.js"
   ],
   "priority": 1000,
-  "alias": "Home / Main"
+  "alias": "Accueil"
 }

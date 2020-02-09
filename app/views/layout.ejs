@@ -3,14 +3,17 @@
   <% include ./shared/_head %>
 
   <body>
-    <% include ./shared/_flashes %>
-    <% include ./shared/_header %>
-    <% include ./shared/_navbar %>
-
     <div class="main container">
-      <%- body %>
 
-      <% include ./shared/_footer %>
+      <% include ./shared/_flashes %>
+      <% include ./shared/_header %>
+      <% include ./shared/_navbar %>
+
+      <div class="content container">
+        <%- body %>
+
+        <% include ./shared/_footer %>
+      </div>
     </div>
   </body>
 
