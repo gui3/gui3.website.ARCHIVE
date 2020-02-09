@@ -88,7 +88,9 @@ new Promise((resolve, reject) => { // automated page loading ===================
   })
   .then(_ => { // voluntary error ==============================================
     router.get('/error', function (req, res) {
-      res.render('YOU WANT TO SEE AN ERROR ? HERE IT IS')
+      const err = new Error('YOU WANT TO SEE AN ERROR ? HERE IT IS')
+      err.code = 'VOLUNTARY'
+      throw err
     })
   })
   .then(_ => { // 404 page not found ===========================================

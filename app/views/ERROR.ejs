@@ -1,19 +1,36 @@
 <section class="white">
   <article class="textCenter">
 
-    <h2>⚡⚡ OOOPS ...</h2>
+    <h2>⚡⚡ OOOPS ... 500</h2>
     <p>
-      On dirais que le serveur a connu une grosse erreur ...
+      On dirais que le serveur a connu une erreur ...
     </p>
     <p>
       <a href="/">
         ↪️ tenter de retourner à la page principale
-      </a>
+      </a><br/>
+      <em>
+        parce qu'on sait jamais,
+        sur un malentendu ça peut marcher
+      </em>
     </p>
     <p>
-      <a onclick="rebootPassword()">
-        💽 esssayer de rebooter le serveur (pour les ADMINS seulement)
-      </a>
+      <a onclick="askServer('reload')">
+        📜 essayer de recharger les scripts (admin)
+      </a><br/>
+      <em>
+        l'application se relance elle même,
+        ne recharge pas les node_modules
+      </em>
+    </p>
+    <p>
+      <a onclick="askServer('reboot')">
+        💽 essayer de rebooter le serveur (admin)
+      </a><br/>
+      <em>
+        tue l'application !
+        le serveur devrait être relancé par l'hébergeur
+      </em>
     </p>
     <p>
       <a href="mailto:guillaume.silvent@hotmail.fr">
@@ -41,8 +58,38 @@
 </section>
 
 <script type="text/javascript">
-function rebootPassword () {
-  const password = prompt('please give ADMIN PASSWORD')
-  if (password) window.location.href = "/reboot:" + password
-}
+const askServer = (function setupCooldown () {
+  const coolDown = 5000
+  let lastClick = Date.now() - coolDown
+
+  function startCoolDown () {
+    lastClick = Date.now()
+  }
+  function checkCoolDown () {
+    const notOver = Date.now() - lastClick < coolDown
+    if (notOver) alert('stop spamming the server !')
+    return !notOver
+  }
+
+  return function askServer (code) {
+    if (checkCoolDown()) {
+      startCoolDown()
+
+      const password = prompt('please give the PASSWORD')
+      if (password) {
+        var xhr = new XMLHttpRequest()
+        xhr.open("POST", '/' + code, true)
+        xhr.setRequestHeader(
+          'Content-Type',
+          'application/json'
+        )
+        xhr.send(JSON.stringify({
+          pswd: password
+        }));
+        console.log(code + ' request send')
+      }
+    }
+  }
+})()
+
 </script>
