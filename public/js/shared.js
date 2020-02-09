@@ -24,3 +24,13 @@ function clearElement (elemt) {
     elemt.removeChild(elemt.firstChild)
   }
 }
+
+function removeElement (arg) {
+  let elemt
+  if (arg.appendChild) {
+    elemt = arg
+  } else {
+    elemt = document.querySelector(arg)
+  }
+  elemt.parentNode.removeChild(elemt)
+}

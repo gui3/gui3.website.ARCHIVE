@@ -6,19 +6,24 @@
       On dirais que le serveur a connu une grosse erreur ...
     </p>
     <p>
-      <a href="/reboot">
-        💽 esssayer de rebooter le serveur
+      <a href="/">
+        ↪️ tenter de retourner à la page principale
+      </a>
+    </p>
+    <p>
+      <a onclick="rebootPassword()">
+        💽 esssayer de rebooter le serveur (pour les ADMINS seulement)
       </a>
     </p>
     <p>
       <a href="mailto:guillaume.silvent@hotmail.fr">
-        📧 j'ai déjà essayé, j'envoie un EMAIL au webmaster
+        📧 j'ai tout essayé, j'envoie un EMAIL au webmaster
       </a>
     </p>
 
   </article>
+  <hr>
   <article class="">
-    <hr>
     <h4>Stack de l'erreur :</h4>
     <pre>
       <code>
@@ -34,3 +39,10 @@
     </pre>
   </article>
 </section>
+
+<script type="text/javascript">
+function rebootPassword () {
+  const password = prompt('please give ADMIN PASSWORD')
+  if (password) window.location.href = "/reboot:" + password
+}
+</script>

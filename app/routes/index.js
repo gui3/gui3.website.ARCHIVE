@@ -86,6 +86,11 @@ new Promise((resolve, reject) => { // automated page loading ===================
     router.use('/users', usersRoutes)
     */
   })
+  .then(_ => { // voluntary error ==============================================
+    router.get('/error', function (req, res) {
+      res.render('YOU WANT TO SEE AN ERROR ? HERE IT IS')
+    })
+  })
   .then(_ => { // 404 page not found ===========================================
     const error404 = require('./404')
     router.use(error404)

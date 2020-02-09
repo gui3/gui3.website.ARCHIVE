@@ -2,7 +2,7 @@
 
   <div class="navbar-header">
     <h3>
-      🗺️ MENU
+      🗺️ MENU hello
     </h3>
 
     <ul class="nav dotted">
@@ -10,7 +10,6 @@
         <% const pages = locals.shared.pages.sort(
           (a, b) => -a.options.priority + b.options.priority
         )
-        console.log(pages)
         for (
           let i = 0; i < pages.length; i++
         ) { // add every page to the menu
@@ -32,6 +31,19 @@
         <% } // end of for %>
       <% } // end of if %>
     </ul>
+
+    <hr>
+
+    <p>pour les curieux</p>
+    <ul class="nav dotted">
+      <li>
+        <a href="/404">404 not found</a>
+      </li>
+      <li>
+        <a href="/error">server error page</a>
+      </li>
+    </ul>
+
   </div>
 
 </nav>
