@@ -1,13 +1,36 @@
 
 /* HOME ------- */
 
-section.img.desk {
+section.img {
   /*background-image: url()*/
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+section.img.desk {
   background-image:
     url(
       '../images/photos/desk.jpg'
     );
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+}
+section.img.cherryTree {
+  background-image:
+    url(
+      '../images/photos/amelie/cherryTree.jpg'
+    );
+}
+section.img.squaresOnWall {
+  background-image:
+    url(
+      '../images/photos/amelie/squaresOnWall.jpg'
+    );
+}
+section.img.grapesOnWall {
+  background-image:
+    url(
+      '../images/photos/amelie/grapesOnWall.jpg'
+    );
 }
