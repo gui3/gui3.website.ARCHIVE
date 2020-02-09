@@ -236,20 +236,20 @@ p.description .title {
   color: #fff;
 }
 .coloured.green {
-  background: #5e5;
+  background: #7f7;
   color: #22b;
 }
 .green h1 {
   background: #22b;
-  color: #5e5;
+  color: #7f7;
 }
 .coloured.yellow {
-  background: #fb4;
+  background: #fd6;
   color: #22b;
 }
 .yellow h1 {
   background: #22b;
-  color: #fb4;
+  color: #fd6;
 }
 
 .margin.left {
