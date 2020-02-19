@@ -1,6 +1,9 @@
 {
   "scripts": [
-    "./js/minigames/tictactoe.js"
+    "./js/examples/tictactoe.js"
+  ],
+  "css": [
+    "./css/examples/tictactoe.css"
   ],
   "priority": 1000,
   "alias": "Accueil"

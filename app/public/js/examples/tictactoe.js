@@ -143,7 +143,7 @@ listen(window, 'load', () => {
         }
       })
       const scoreGrid = [ // interrest according to the lines schema :
-        [2, -2, 20, 0], // ..., O.., OO., OOO
+        [2, 0, 20, 0], // ..., O.., OO., OOO
         [5, 0, 0],      // ..X, .OX, OOX
         [30, 0],        // .XX, OXX
         [0]             // XXX

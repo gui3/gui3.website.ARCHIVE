@@ -12,8 +12,11 @@
     "type": "git",
     "url": "git+https://github.com/gui3/gui3.website.git"
   },
-  "author": "gui3",
-  "license": "Unlicense",
+  "author": {
+    "name": "gui3",
+    "email": "guillaume.silvent@hotmail.fr"
+  },
+  "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/gui3/gui3.website/issues"
   },
@@ -25,7 +28,8 @@
     "ejs": "^2.7.2",
     "express": "^4.17.1",
     "express-partials": "^0.3.0",
-    "mongoose": "^5.7.10"
+    "mongoose": "^5.7.10",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.4",

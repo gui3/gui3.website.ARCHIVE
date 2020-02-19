@@ -24,7 +24,13 @@ module.exports = function (eventEmitter) {
   app.set('views', path.join(__dirname, 'views'))
   app.use(require('express-partials')())
 
+  // static and favicon ========================================================
   app.use(express.static('app/public'))
+
+  const favicon = require('serve-favicon')
+  app.use(favicon(path.join(
+    __dirname, 'public', 'favicon.ico'
+  )))
 
   // RELOAD & REBOOT ===========================================================
   // const hash = require('./helpers/hash')
@@ -70,53 +76,10 @@ module.exports = function (eventEmitter) {
     }
   )
   // ROUTES ====================================================================
-  const routes = require('./routes/index')
-  app.use('/', routes)
+  app.use('/', require('./routes/index'))
 
   // ERROR HANDLER =============================================================
-  app.use(function (err, req, res, next) {
-    if (err.code !== 'VOLUNTARY') console.error(err.stack)
-
-    function textErrorPage (handlerError, originalError) {
-      // in case there is NO RENDERER
-      // this is my last resooort ...
-      res.status(500)
-        .type('text')
-        .send(
-          '\n\n' +
-          '**************************************\n' +
-          'OUPS ???? j ai cru voir une grosse erreur ...\n' +
-          'Si vous voyez ce message, ' +
-          'merci de me prevenir a cette addresse :\n' +
-          'guillaume.silvent@hotmail.fr\n' +
-            '**************************************\n\n' +
-          'ERROR HANDLING AN ERROR --------------------\n\n' +
-          handlerError.stack +
-          '\n\nORIGINAL ERROR -----------------------------\n\n' +
-          originalError.stack
-        )
-    }
-
-    try { // rendered error page -----------------------------------------------
-      res.status(500)
-      res.render(
-        'ERROR',
-        {
-          err: err,
-          layout: 'layoutBare'
-        },
-        function (e, html) {
-          if (e) { // renderer not working 1 -----------------------------------
-            textErrorPage(e, err)
-          } else { // renderer working -----------------------------------------
-            res.send(html)
-          }
-        }
-      )
-    } catch (e) { // renderer not working 2 ------------------------------------
-      textErrorPage(e, err)
-    }
-  })
+  app.use(require('./middlewares/errorHandler'))
 
   // Listen ====================================================================
   const port = process.env.PORT || 3000
