@@ -55,12 +55,6 @@ module.exports = function (eventEmitter) {
       if (req.body.pswd) {
         validAndSendToMain(req.body.pswd, 'reload', next)
       }
-      /*
-      res.locals.flashes = [{
-        class: 'info',
-        text: 'server successfully semi-rebooted'
-      }]
-      */
       res.redirect('/')
     }
   )
