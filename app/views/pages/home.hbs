@@ -1,7 +1,7 @@
 
 <section id="top" class="img fixedBck desk">
   <article class="white textCenter">
-    <h1>Bien le bonjour !</h1>
+    <h1>{{page.lang.fr.pageTitle}}</h1>
   </article>
 
   <!--img
@@ -11,16 +11,10 @@
 
   <article class="white margin left">
 
-    <h2>... et bienvenue chez moi</h2>
+    <h2>{{ page.lang.fr.introTitle }}</h2>
 
     <p>
-      Vous êtes sur la
-      <strong>
-        page personnelle de
-        <a href="/about#quiSuisJe">Guillaume Silvent</a>
-      </strong>,<br/>
-      programmeur hobbyiste ...<br/>
-      ... et musicien a ses heures perdues
+      {{{ page.lang.fr.intro }}}
     </p>
 
   </article>
@@ -30,16 +24,12 @@
   <article class="textCenter">
 
     <h3>
-      Vous avez envie de
-      <a href="/hire">me recruter</a> ?,<br/>
-      créer un
-      <a href="/skills#websites">site web</a> ?,<br/>
-      développer un
-      <a href="/skills#programs">petit logiciel</a> ?
+      {{{ page.lang.fr.catchyWebsites }}},<br/>
+      {{{ page.lang.fr.catchyPrograms }}},<br/>
+      {{{ page.lang.fr.catchyHire }}}
     </h3>
     <h2>
-      n'hésitez pas à
-      <a href="/contact"> me contacter</a> !
+      {{{ page.lang.fr.catchyContact }}}
     </h2>
   </article>
 </section>
@@ -60,7 +50,7 @@
         <a href="/tictactoe">-> Plus d'informations</a>
       </blockquote>
 
-      <% include ../components/examples/tictactoe.html %>
+      {{> examples/tictactoe }}
 
     </article>
   </div>

@@ -1,83 +1,61 @@
-module.exports = function (eventEmitter) {
-  // Setup ---------------------------------------------------------------------
-  const express = require('express')
-  const app = express()
+// Setup ---------------------------------------------------------------------
+const express = require('express')
+const app = express()
 
-  const bodyParser = require('body-parser')
-  // app.use(bodyParser.urlencoded({ extended: false }))
-  // app.use(bodyParser.json())
+const bodyParser = require('body-parser')
+// app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(bodyParser.json())
 
-  require('dotenv').config()
+// const models = require('./app/db/models') // models =======================
 
-  // const models = require('./app/db/models') // models =======================
+// models.Post.create(
+//   {title:'test', content:'blablabla'},
+//   (err, post) => {
+//     if (err) {console.log(err)}
+//     else {console.log('post test créé !')}
+// });
 
-  // models.Post.create(
-  //   {title:'test', content:'blablabla'},
-  //   (err, post) => {
-  //     if (err) {console.log(err)}
-  //     else {console.log('post test créé !')}
-  // });
+// view engine ===============================================================
+const path = require('path')
+/*
+const handlebars = require('express-handlebars')
 
-  // view engine ===============================================================
-  const path = require('path')
-  app.set('view engine', 'ejs')
-  app.set('views', path.join(__dirname, 'views'))
-  app.use(require('express-partials')())
+app.engine('hbs', handlebars({
+  layoutsDir: path.join(__dirname, 'views/layouts'),
+  partialsDir: path.join(__dirname, 'views/components'),
+  defaultLayout: 'index',
+  extname: 'hbs'
+}))
+*/
+const hbs = require('hbs')
+hbs.registerPartials(path.join(__dirname, '/views/components'))
+app.set('view engine', 'hbs')
+app.set('views', path.join(__dirname, 'views'))
+app.set('view options', { layout: 'layouts/index' })
+// app.use(require('express-partials')())
 
-  // static and favicon ========================================================
-  app.use(express.static('app/public'))
+// static and favicon ========================================================
+app.use(express.static('app/public'))
 
-  const favicon = require('serve-favicon')
-  app.use(favicon(path.join(
-    __dirname, 'public', 'favicon.ico'
-  )))
+const favicon = require('serve-favicon')
+app.use(favicon(path.join(
+  __dirname, 'public', 'favicon.ico'
+)))
 
-  // RELOAD & REBOOT ===========================================================
-  // const hash = require('./helpers/hash')
-  const bcrypt = require('bcrypt')
+// Messages to MAIN ==========================================================
+// const hash = require('./helpers/hash')
+app.use(require('./middlewares/toMain'))
 
-  function validAndSendToMain (pswd, evnt, next) {
-    bcrypt.compare(pswd, process.env.ADMIN_HASH, (err, valid) => {
-      if (err) next(err)
-      if (valid) {
-        console.log('INFO --> valid ' + evnt + ' password POSTed')
-        eventEmitter.emit(evnt + process.env.MAIN_PASSWORD)
-      } else {
-        console.log('WARNING --> INVALID ' + evnt + ' password POSTed !')
-      }
-    })
-  }
+// ROUTES ====================================================================
+app.use('/', require('./routes/index'))
 
-  app.post(
-    '/reload',
-    bodyParser.json(),
-    function (req, res, next) {
-      if (req.body.pswd) {
-        validAndSendToMain(req.body.pswd, 'reload', next)
-      }
-      res.redirect('/')
-    }
-  )
+// 404 and 500 errors ========================================================
+app.use(require('./middlewares/error404'))
+app.use(require('./middlewares/error500'))
 
-  app.post(
-    '/reboot',
-    bodyParser.json(),
-    function (req, res, next) {
-      if (req.body.pswd) {
-        validAndSendToMain(req.body.pswd, 'reboot', next)
-      }
-      res.redirect('/')
-    }
-  )
-  // ROUTES ====================================================================
-  app.use('/', require('./routes/index'))
+// Listen ====================================================================
+const port = process.env.PORT || 3000
 
-  // ERROR HANDLER =============================================================
-  app.use(require('./middlewares/errorHandler'))
-
-  // Listen ====================================================================
-  const port = process.env.PORT || 3000
-  return app.listen(port, () => {
-    console.log('Server listening on port :' + port)
-  })
-}
+module.exports = app.listen(port, () => {
+  console.log('Server listening on port :' + port)
+})

@@ -1,5 +1,6 @@
-const fs = require('fs')
 const router = require('express').Router()
+
+const pageOptions = require('../utils/pageOptions')
 
 router.use(function timeLog (req, res, next) {
   console.log('Time: ', Date.now())
@@ -8,63 +9,35 @@ router.use(function timeLog (req, res, next) {
 
 const root = 'home' // set here the page to launch at address '/'
 
-new Promise((resolve, reject) => { // automated page loading ===================
-  /*
-   * creates a page for each .ejs found in the app/views/pages folder
-   * and adds options if an optionnale .json file of the same name found
-  */
-  fs.readdir(
-    './app/views/pages',
-    (err, files) => {
-      err ? reject(err) : resolve(files)
+router.get('/', (req, res) => {
+  res.render(
+    'home',
+    {
+      page: pageOptions('home')
     }
   )
 })
-  .then(files => { // file parsing =============================================
-    const pageLoaders = []
-    files.forEach(file => {
-      const fileName = file.replace(/.ejs$/, '')
-      if (!fileName.includes('.')) { // exclude other files
-        pageLoaders.push(new Promise((resolve, reject) => {
-          const page = {}
-          page.name = file.replace(/.ejs$/, '')
-          // options.json ------------------------------------------------------
-          fs.readFile(
-            './app/views/pages/' + page.name + '.json',
-            (err, data) => {
-              if (!err) {
-                page.options = JSON.parse(data)
-                console.log(page.name + ' - options loaded')
-                resolve(page)
-              } else if (err && err.code === 'ENOENT') {
-                console.log(
-                  page.name + ' - .json not found - no options for this page'
-                )
-                page.options = {}
-                resolve(page)
-              } else { // error handler
-                reject(err)
-              }
-            }
-          )
-        }))
-      }
-    })
-    return Promise.all(pageLoaders)
-  })
+
+
+
+
+require('../utils/allPagesLoader')
   .then(pages => { // http responses ===========================================
     pages.forEach(page => {
       console.log(page.name + ' --> page loaded')
+
+      const options = {
+        shared: { // shared options for all the pages-------------------------
+          links: ''
+        },
+        page: page // page options -------------------------------------------
+      }
+
       router.get('/' + page.name, function (req, res) {
-        const options = {
-          shared: { // shared options for all the pages-------------------------
-            pages: pages
-          },
-          page: page.options // page options -----------------------------------
-        }
         res.render('pages/' + page.name, options)
       })
     })
+
     return pages
   })
   .then(pages => { // root =====================================================
@@ -73,7 +46,7 @@ new Promise((resolve, reject) => { // automated page loading ===================
       shared: {
         pages: pages
       },
-      page: rootPage.options
+      page: rootPage
     }
     router.get('/', function (req, res) {
       res.render('pages/' + rootPage.name, options)
@@ -93,13 +66,8 @@ new Promise((resolve, reject) => { // automated page loading ===================
       throw err
     })
   })
-  .then(_ => { // 404 page not found ===========================================
-    const error404 = require('./404')
-    router.use(error404)
-    console.log('--> all pages ready')
-  })
   .catch(err => { // error handler =============================================
-    console.error(err)
+    throw err
   })
 
 module.exports = router

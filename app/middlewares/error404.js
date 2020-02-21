@@ -5,7 +5,7 @@ function error404 (req, res, next) {
   if (req.accepts('html')) {
     res.render('404', {
       url: req.url,
-      layout: 'layoutBare'
+      layout: 'layouts/bare'
     })
     return
   }

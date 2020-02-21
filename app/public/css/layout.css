@@ -1,0 +1,49 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+body {
+  min-height: 100%;
+  min-height: 100vh;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+}
+header div {
+  padding: 0 2em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+section.app-container {
+  min-height: 100%;
+  width: 100%;
+  position: absolute;
+}
+section .page-container {
+  padding-top: 100px;
+  padding-bottom: 150px;
+}
+
+footer {
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+
+  min-height: 100px;
+}
+footer .content {
+  margin: 50px;
+}
+
+article {
+  padding: 1em 3em;
+}

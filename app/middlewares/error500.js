@@ -24,10 +24,10 @@ module.exports = function (err, req, res, next) {
   try { // rendered error page -----------------------------------------------
     res.status(500)
     res.render(
-      'ERROR',
+      '500',
       {
         err: err,
-        layout: 'layoutBare',
+        layout: 'layouts/bare',
         page: {
           scripts: [
             './js/shared/askServer.js'

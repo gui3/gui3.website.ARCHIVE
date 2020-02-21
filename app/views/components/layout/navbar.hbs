@@ -1,0 +1,30 @@
+<!--nav>
+  <a href="/news">Nouvelles</a>
+  -
+  <a href="/rp">Jeus de Rosle</a>
+  -
+  <a href="/books">Libvres</a>
+  -
+  <a href="/map">Carte</a>
+  -
+  <a href="/about">A propos</a>
+</nav-->
+
+<nav id="navbar" class="navbar" role="navigation">
+
+  {{#each shared.pages}}
+    <a href="/{{this.name}}">
+      {{#if this.options.alias}}
+        {{this.options.alias}}
+      {{else}}
+        {{this.name}}
+      {{/if}}
+    </a>
+    -
+  {{/each}}
+
+  <hr>
+  <a href="/404">404 not found</a>
+  -
+  <a href="/error">server error page</a>
+</nav>

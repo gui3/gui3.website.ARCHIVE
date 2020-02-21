@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{#if lang}}{{lang}}{{else}}fr{{/if}}">
+  {{> layout/_head}}
+  <body>
+    <section class="app-container">
+      {{> layout/header}}
+      {{> layout/navbar}}
+      <section class="page-container">
+        {{{body}}}
+      </section>
+      {{> layout/footer}}
+    </section>
+  </body>
+  {{> layout/_scripts}}
+</html>

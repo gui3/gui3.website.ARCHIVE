@@ -42,17 +42,11 @@
   <hr>
   <article class="">
     <h4>Stack de l'erreur :</h4>
-    <pre>
-      <code>
-        <%= locals.err
-          ? locals.err.stack
-            ? locals.err.stack
-            : locals.err.message
-              ? locals.err.message
-              : locals.err
-          : 'erreur non tracee'
-           %>
-      </code>
+    <pre class="code">
+      <code>{{err.stack}}</code>
+      <hr>
+      <code>ERROR MESSAGE : {{err.message}}</code>
+      <code>ERROR NAME : {{err.name}}</code>
     </pre>
   </article>
 </section>
